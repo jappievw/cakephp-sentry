@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 /**
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
@@ -11,6 +10,7 @@ declare(strict_types=1);
  * @link          http://cakephp.org CakePHP(tm) Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace CakeSentry\Middleware;
 
 use Cake\Core\Configure;
@@ -29,7 +29,6 @@ class CakeSentryQueryMiddleware implements MiddlewareInterface
 {
     /**
      * Invoke the middleware.
-     *
      * DebugKit will augment the response and add the toolbar if possible.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request The request.
@@ -57,7 +56,13 @@ class CakeSentryQueryMiddleware implements MiddlewareInterface
                 continue;
             }
             $logger = null;
-            $driverConfig = $connection->config();
+
+            try {
+                $driverConfig = $connection->config();
+            } catch (\Exception) {
+                $driverConfig = [];
+            }
+
             if ($driverConfig['sentryLog'] ?? false) {
                 $logger = $connection->getLogger();
             }
