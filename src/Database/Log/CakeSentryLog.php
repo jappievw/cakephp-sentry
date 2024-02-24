@@ -179,7 +179,7 @@ class CakeSentryLog extends AbstractLogger
 
         $this->totalTime += $context['took'];
         $this->totalRows += $context['numRows'];
-        $this->role = $context['role'];
+        $this->role = "unknown";
 
         $this->queries[] = $query;
     }
