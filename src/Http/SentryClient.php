@@ -57,9 +57,7 @@ class SentryClient implements EventDispatcherInterface
             if ($connection->configName() === 'debug_kit') {
                 continue;
             }
-            /** @var \Cake\Database\Driver $driver */
-            $driver = $connection->getDriver();
-            $logger = $driver->getLogger();
+            $logger = $connection->getLogger();
 
             if ($logger instanceof CakeSentryLog) {
                 $logger->setIncludeSchema($includeSchemaReflection);

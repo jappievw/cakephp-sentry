@@ -12,7 +12,7 @@ use CakeSentry\Http\SentryClient;
 use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
 
-class SentryErrorLogger implements ErrorLoggerInterface
+class SentryErrorLogger extends ErrorLogger implements ErrorLoggerInterface
 {
     private ErrorLogger $logger;
 
@@ -25,6 +25,8 @@ class SentryErrorLogger implements ErrorLoggerInterface
      */
     public function __construct(array $config)
     {
+        parent::__construct($config);
+
         $this->logger = new ErrorLogger($config);
         $this->client = new SentryClient();
         $this->config = Configure::read('Sentry');

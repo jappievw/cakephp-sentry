@@ -57,15 +57,13 @@ class CakeSentryQueryMiddleware implements MiddlewareInterface
                 continue;
             }
             $logger = null;
-            /** @var \Cake\Database\Driver $driver */
-            $driver = $connection->getDriver();
-            $driverConfig = $driver->config();
+            $driverConfig = $connection->config();
             if ($driverConfig['sentryLog'] ?? false) {
-                $logger = $driver->getLogger();
+                $logger = $connection->getLogger();
             }
 
             $logger = new CakeSentryLog($logger, $name, $includeSchemaReflection);
-            $driver->setLogger($logger);
+            $connection->setLogger($logger);
         }
     }
 }
