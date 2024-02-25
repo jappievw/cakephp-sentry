@@ -82,18 +82,16 @@ class SentryClient implements EventDispatcherInterface
                 }
 
                 foreach ($queries as $query) {
-                    $context = $query->getContext();
                     $data = ['connectionName' => $logger->name()];
-                    $data['executionTimeMs'] = $context['took'];
-                    $data['rows'] = $context['numRows'];
-                    $data['role'] = $context['role'];
+                    $data['executionTimeMs'] = $query->took;
+                    $data['rows'] = $query->numRows;
 
                     $this->hub->addBreadcrumb(
                         new Breadcrumb(
                             level: Breadcrumb::LEVEL_INFO,
                             type: Breadcrumb::TYPE_DEFAULT,
                             category: 'sql.query',
-                            message: $context['query'],
+                            message: strval($query),
                             metadata: $data
                         )
                     );

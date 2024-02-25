@@ -175,11 +175,8 @@ class CakeSentryLog extends AbstractLogger
             $this->addTransactionSpan($query, $this->connectionName);
         }
 
-        $context = $query->getContext();
-
-        $this->totalTime += $context['took'];
-        $this->totalRows += $context['numRows'];
-        $this->role = "unknown";
+        $this->totalTime += $query->took;
+        $this->totalRows += $query->numRows;
 
         $this->queries[] = $query;
     }

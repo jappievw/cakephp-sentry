@@ -38,9 +38,7 @@ trait QuerySpanTrait
             return;
         }
 
-        $context = $query->getContext();
-
-        if ($context['query'] === 'BEGIN') {
+        if (strval($query) === 'BEGIN') {
             $spanContext = new SpanContext();
             $spanContext->setOp('db.transaction');
             $this->pushSpan($parentSpan->startChild($spanContext));
@@ -48,7 +46,7 @@ trait QuerySpanTrait
             return;
         }
 
-        if ($context['query'] === 'COMMIT') {
+        if (strval($query) === 'COMMIT') {
             $span = $this->popSpan();
 
             if ($span !== null) {
@@ -76,9 +74,9 @@ trait QuerySpanTrait
         $spanContext->setData([
             'db.system' => $type ?? 'mysql',
         ]);
-        $spanContext->setDescription($context['query']);
-        $spanContext->setStartTimestamp(microtime(true) - $context['took'] / 1000);
-        $spanContext->setEndTimestamp($spanContext->getStartTimestamp() + $context['took'] / 1000);
+        $spanContext->setDescription(strval($query));
+        $spanContext->setStartTimestamp(microtime(true) - $query->took / 1000);
+        $spanContext->setEndTimestamp($spanContext->getStartTimestamp() + $query->took / 1000);
         $parentSpan->startChild($spanContext);
     }
 
