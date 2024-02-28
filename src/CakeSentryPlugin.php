@@ -19,12 +19,12 @@ class CakeSentryPlugin extends BasePlugin
     {
         $enableQueryLogging = Configure::read('CakeSentry.enableQueryLogging', false);
         if ($enableQueryLogging) {
-            $middlewareQueue = $middlewareQueue->add(new CakeSentryQueryMiddleware());
+            $middlewareQueue = $middlewareQueue->insertAt(0, new CakeSentryQueryMiddleware());
         }
 
         $enablePerformanceLogging = Configure::read('CakeSentry.enablePerformanceMonitoring', false);
         if ($enableQueryLogging && $enablePerformanceLogging) {
-            $middlewareQueue = $middlewareQueue->add(new CakeSentryPerformanceMiddleware());
+            $middlewareQueue = $middlewareQueue->insertAt(1, new CakeSentryPerformanceMiddleware());
         }
 
         return $middlewareQueue;
